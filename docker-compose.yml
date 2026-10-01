@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:alpine
+    container_name: clienthub-web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./site:/usr/share/nginx/html
+    networks:
+      - app-network
+
+  api:
+    build: .
+    container_name: clienthub-api
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=clientdb
+      - DB_USER=app_user
+      - DB_PASSWORD=app_password
+      - DB_PORT=3306
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: clienthub-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: clientdb
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql   # <-- Ajout crucial ici
+    networks:
+      - app-network
+
+volumes:
+  mysql_data:
+
+networks:
+  app-network:
+    driver: bridge

@@ -15,7 +15,7 @@ services:
     build: .
     container_name: clienthub-api
     ports:
-      - "5000:5000"
+      - "8022:8022"
     environment:
       - DB_HOST=db
       - DB_NAME=clientdb

@@ -74,4 +74,4 @@ def add_client():
     return jsonify({"message": "Client ajouté avec succès", "name": name}), 201
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8022, debug=True)

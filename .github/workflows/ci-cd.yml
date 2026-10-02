@@ -50,7 +50,7 @@ jobs:
         run: |
           echo "Attente du démarrage de l'API..."
           for i in {1..15}; do
-            curl -s http://localhost:5000/health && echo "API prête !" && exit 0
+            curl -s http://localhost:8022/health && echo "API prête !" && exit 0
             sleep 3
           done
           echo "L'API n'a pas démarré à temps"
@@ -107,4 +107,4 @@ jobs:
             
             # Vérification
             sleep 5
-            curl --fail http://localhost:5000/health
+            curl --fail http://localhost:8022/health

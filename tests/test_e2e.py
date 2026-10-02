@@ -3,7 +3,7 @@ import os
 import requests
 
 # URL de l'API (pointe vers localhost en local, ou vers le service en CI)
-BASE_URL = os.getenv("API_URL", "http://localhost:5000")
+BASE_URL = os.getenv("API_URL", "http://localhost:8022")
 
 def test_app_availability():
     """Vérifie la disponibilité de l'application via /health"""

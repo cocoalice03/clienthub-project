@@ -96,15 +96,21 @@ jobs:
           username: ${{ secrets.AZURE_VM_USER }}
           password: ${{ secrets.AZURE_VM_PASSWORD }} # <-- On utilise le mot de passe ici
           script: |
-            # Se placer dans le dossier du projet sur la VM (ou le créer s'il n'existe pas)
+            # 1. Créer le dossier et s'y positionner
             mkdir -p ~/clienthub-project
             cd ~/clienthub-project
-            
-            # Si le docker-compose.yml n'est pas encore sur la VM, il faudra l'y placer ou le cloner.
-            # Pour l'instant, on met à jour l'image et on redémarre :
+
+            # 2. Cloner le projet s'il n'existe pas, ou faire un git pull s'il est déjà là
+            if [ ! -d ".git" ]; then
+              git clone https://github.com/cocoalice03/clienthub-project.git .
+            else
+              git pull origin main
+            fi
+
+            # 3. Lancer le déploiement avec les ports configurés (ex: 8022)
             docker compose pull
             docker compose up -d --force-recreate
-            
-            # Vérification
+
+            # 4. Vérification finale sur le port correct (8022)
             sleep 5
             curl --fail http://localhost:8022/health
